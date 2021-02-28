@@ -45,7 +45,7 @@ var AUTOPREFIXER_BROWSERS = [
 //============================================================================
 gulp.task('style', function () {
   // Path to main.scss file ('gulp').
-  return gulp.src( './src/assets/sass/main.scss' )
+  return gulp.src( 'src/assets/sass/main.scss' )
   // Initialize the sourcemap ('gulp-sourcemaps').
   .pipe( sourcemaps.init() )
   // Compile SASS to CSS ('gulp-sass').
@@ -64,7 +64,7 @@ gulp.task('style', function () {
   // Consistent Line Endings for non UNIX systems ('gulp-line-ending-corrector')
   .pipe( lec() )
   // Save the processed to folder css ('gulp').
-  .pipe( gulp.dest( './dist/css/' ) )
+  .pipe( gulp.dest( 'dist/css/' ) )
   // Reloads browser if main.css is enqueued ('browser-sync')
   .pipe( browserSync.stream() )
 
@@ -80,7 +80,7 @@ gulp.task('style', function () {
   // Consistent Line Endings for non UNIX systems ('gulp-line-ending-corrector')
   .pipe( lec() )
   // Save the processed to folder css ('gulp').
-  .pipe( gulp.dest( './dist/css/' ) )
+  .pipe( gulp.dest( 'dist/css/' ) )
   // Reloads browser if main.min.css is enqueued ('browser-sync')
   .pipe(browserSync.stream());
 });
@@ -89,7 +89,7 @@ gulp.task('style', function () {
 //============================================================================
 gulp.task('style-editor', function () {
   // Path to style-editor.scss file ('gulp').
-  return gulp.src( './src/assets/sass/style-editor.scss' )
+  return gulp.src( 'src/assets/sass/style-editor.scss' )
   // Compile SASS to CSS ('gulp-sass').
   .pipe(sass({
     outputStyle: 'expanded',
@@ -104,20 +104,21 @@ gulp.task('style-editor', function () {
   // Consistent Line Endings for non UNIX systems ('gulp-line-ending-corrector')
   .pipe( lec() )
   // Save the processed to folder css ('gulp').
-  .pipe( gulp.dest( './dist/css/' ) );
+  .pipe( gulp.dest( 'dist/css/' ) );
 });
 
 // TASK 'images' : Minifies PNG, JPEG, GIF and SVG images.
 //============================================================================
 gulp.task( 'images', function() {
-  return gulp.src( './src/assets/img/**/*.{png,jpg,gif,svg}' )
+  return gulp.src( 'src/assets/img/**/*.{png,jpg,gif,svg}' )
     .pipe( imagemin( {
           progressive: true,
           optimizationLevel: 3, // 0-7 low-high
           interlaced: true,
           svgoPlugins: [{removeViewBox: false}]
         } ) )
-    .pipe(gulp.dest( './dist/img/' ));
+    .pipe(gulp.dest( 'dist/img/' ))
+    .pipe(browserSync.stream());
 });
 
 // Task: 'js'
@@ -125,13 +126,13 @@ gulp.task( 'images', function() {
 // Task js concat and minify appcustom which goes in footer
 gulp.task( 'appcustomJS', function() {
   // Path to custom js source files ('gulp').
-  return gulp.src( './src/assets/js/appcustom/*.js' )
+  return gulp.src( 'src/assets/js/appcustom/*.js' )
   // Concat JS with name you choose ('gulp-concat').
   .pipe( concat( 'appcustom.js' ) )
   // Consistent Line Endings for non UNIX systems ('gulp-line-ending-corrector')
   .pipe( lec() )
   // Save the processed js to folder ('gulp')
-  .pipe( gulp.dest( './dist/js/' ) )
+  .pipe( gulp.dest( 'dist/js/' ) )
   // Rename with .min ('gulp-rename').
   .pipe( rename( {
     suffix: '.min'
@@ -141,20 +142,20 @@ gulp.task( 'appcustomJS', function() {
   // Consistent Line Endings for non UNIX systems ('gulp-line-ending-corrector')
   .pipe( lec() )
   // Save the processed js to folder ('gulp')
-  .pipe( gulp.dest( './dist/js/' ) );
+  .pipe( gulp.dest( 'dist/js/' ) );
  });
 
 // Task js minify other js files
 gulp.task( 'addotherJS', function() {
   // Path to other js source files ('gulp').
   return gulp.src([
-    './src/assets/js/condcustom/*.js',
-    './src/assets/js/vendor/*.js',
+    'src/assets/js/condcustom/*.js',
+    'src/assets/js/vendor/*.js',
   ])
   // Consistent Line Endings for non UNIX systems ('gulp-line-ending-corrector')
   .pipe( lec() )
   // Send js to folder ('gulp')
-  .pipe( gulp.dest( './dist/js/' ) )
+  .pipe( gulp.dest( 'dist/js/' ) )
   // Rename with .min ('gulp-rename').
   .pipe( rename( {
     suffix: '.min'
@@ -164,7 +165,7 @@ gulp.task( 'addotherJS', function() {
   // Consistent Line Endings for non UNIX systems ('gulp-line-ending-corrector')
   .pipe( lec() )
   // Save the processed js to folder ('gulp').
-  .pipe( gulp.dest( './dist/js/' ) );
+  .pipe( gulp.dest( 'dist/js/' ) );
 });
 
 // TASK Global 'js'
@@ -187,13 +188,15 @@ gulp.task('watch', function() {
   });
 
   // When a file ending with .scss is modified (even partials), make Task 'Style' Reloading is already inside.
-  gulp.watch('./src/assets/sass/**/*.scss', ['style']);
+  gulp.watch('src/assets/sass/**/*.scss', ['style']);
   // Reload the browser when a PHP file is modified.
-  gulp.watch('./**/*.php').on('change', reload);
+  gulp.watch('**/*.php').on('change', reload);
   // Reload the browser when an appcustom JS files is modified.
-  gulp.watch( './src/assets/js/appcustom/*.js', [ 'js', reload ] );
+  gulp.watch( 'src/assets/js/appcustom/*.js', [ 'js', reload ] );
   // Reload the browser when an condcustom JS files is modified.
-  gulp.watch( './src/assets/js/condcustom/*.js', [ 'js', reload ] );
+  gulp.watch( 'src/assets/js/condcustom/*.js', [ 'js', reload ] );
+
+  gulp.watch( 'src/assets/img/**/*.{png,jpg,gif,svg}', ['images']);
 });
 
 // Task: 'default' for development
@@ -204,7 +207,7 @@ gulp.task('default', ['watch']);
 // Task: 'translate' generate a .pot file with all the PHP files
 //============================================================================
 gulp.task( 'translate', function () {
-  return gulp.src( './**/*.php' )
+  return gulp.src( '**/*.php' )
   // Prevent unnecessary changes in pot-file ('gulp-sort')
   .pipe(sort())
   // Generating the .pot file('gulp-wp-pot')
@@ -215,7 +218,7 @@ gulp.task( 'translate', function () {
     lastTranslator: 'YourName',
     team          : 'Team Name <your_email@email.com>'
   } ))
-  .pipe(gulp.dest('./languages/wpesd.pot' ))
+  .pipe(gulp.dest('languages/wpesd.pot' ))
 });
 
 /**

@@ -2,14 +2,14 @@
 
 Utiliser un Starter thème intégrant l'utilisation de Gulp pour gérer les fichiers sass, js, img et bénéficier d'un livereload.
 
-## wpesd
+## wpesd-starter-theme
 
-`wpesd` est un starter thème construit à partir du starter theme `_s` en version Sass.
+`wpesd-starter-theme` est un starter thème construit à partir du starter theme `_s` en version Sass.
 
 Il a subit quelques modifications de fichiers afin d'y inclure l'utilisation de Gulp pour améliorer le flux de travail pendant la phase de développement du thème.  
 Le layout `content-sidebar` a été ajouté à la feuille de style principale, et peut être modifié pour `sidebar-content`
 
-`wpesd` contient un dossier ressources `/src/assets/` regroupant les fichiers sass, js et img afin d'automatiser via Gulp des tâches relatives au développement.  
+`wpesd-starter-theme` contient un dossier ressources `/src/assets/` regroupant les fichiers sass, js et img afin d'automatiser via Gulp des tâches relatives au développement.  
 Ce dossier ne sert que pendant la phase de développement et permet de générer à la racine du thème un dossier `/assets/` pour la prod.
 
 Les tâches se situent au niveau :
@@ -58,7 +58,7 @@ Importer le thème dans son installation WordPress :
 
 `cd wp-content/themes`
 
-`git clone https://github.com/valerieblanchard/wpesd.git`
+`git clone https://github.com/francoisMi/wpesd-starter-theme.git`
 
 En l'état le thème ne fonctionnera pas correctement, il faut utiliser Gulp pour générer à la racine du thème le dossier assets contenant les fichiers à utiliser en production.
 
@@ -83,11 +83,11 @@ Lancer l'installation des modules : `npm install`
 
 ### 3 - Générer les fichiers à utiliser  dans le thème
 
-Générer le dossier `assets` à la racine du thème à partir des fichers sources `/src/assets` en lançant :
+Générer le dossier `dist` à la racine du thème à partir des fichers sources `/src/assets` en lançant :
 
 `gulp build`
 
-**NB:** Aucune modification ne doit se faire au niveau du dossier `/assets`. Il ne faut intervenir que sur le dossier des assets sources : `/src/assets`, les assets pour la prod seront réactualisés en permanence via un `gulp watch`.
+**NB:** Aucune modification ne doit se faire au niveau du dossier `/dist`. Il ne faut intervenir que sur le dossier des assets sources : `/src/assets`, les assets pour la prod seront réactualisés en permanence via un `gulp watch`.
 
 ### 4 - Surveiller les modifications de fichiers du thème
 
